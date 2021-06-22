@@ -1,0 +1,45 @@
+name: RSS Reader CI
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  run_linter:
+     name: Run linter
+     runs-on: ubuntu-latest
+     
+     steps:
+       - name: Check out Git repository
+         uses: actions/checkout@v2
+
+       - name: Set up Node.js
+         uses: actions/setup-node@v1
+         with:
+          node-version: 12
+          
+       - name: Install Node.js dependencies
+         run: npm ci
+
+       - name: Run linters
+         run: make lint
+  run_tests:
+    name: Run jest
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+        node-version: 12
+        
+      - name: Install Node.js dependencies
+        run: npm ci
+
+      - name: Run linters
+        run: make lint
