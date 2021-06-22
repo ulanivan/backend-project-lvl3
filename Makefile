@@ -3,3 +3,6 @@ lint:
 
 test:
 	npx jest
+
+build:
+	npm run build
