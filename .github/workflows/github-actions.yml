@@ -2,9 +2,10 @@ name: Page Loader CI
 
 on:
   push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    branches:
+      - '**'
+    tags:
+      - '**'
 
 jobs:
   run_linter:
