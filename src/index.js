@@ -8,12 +8,12 @@ const makeFileName = (path) => {
   return `${hostname}${pathname}`.replace(/[^a-zA-Z0-9]/g, '-');
 };
 
-const pageLoader = (pathToPage, outputDir = process.cwd()) => {
+const pageLoader = async (pathToPage, outputDir = process.cwd()) => {
   const pathToLoadedFile = `${outputDir}/${makeFileName(pathToPage)}.html`;
-  axios.get(pathToPage).then(({ data }) => {
+  return axios.get(pathToPage).then(({ data }) => {
     fsPromises.writeFile(pathToLoadedFile, data);
+    return pathToLoadedFile;
   });
-  return pathToLoadedFile;
 };
 
 export default pageLoader;
