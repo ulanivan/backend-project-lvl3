@@ -1,4 +1,4 @@
-name: RSS Reader CI
+name: Page Loader CI
 
 on:
   push:
