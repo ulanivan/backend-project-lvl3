@@ -9,17 +9,6 @@ const fileName = 'ru-hexlet-io-courses.html';
 
 const homedir = os.homedir();
 
-// beforeEach(async () => {
-//   const dtemp = await fs.mkdtemp(path.join(os.tmpdir(), 'page-loader-'), (_, dir) => {
-//     console.log(dir);
-//   });
-//   return dtemp;
-// });
-
-// afterEach(() => {
-// removeCreatedFiles();
-// });
-
 test('default output dir', async () => {
   const pathToFile = `${process.cwd()}/${fileName}`;
   const result = await pageLoader(pathToPage);
