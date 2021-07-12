@@ -1,11 +1,13 @@
 // import nock from 'nock';
 import fs from 'fs';
+import os from 'os';
 // import path from 'path';
-// import os from 'os';
 import pageLoader from '../src';
 
 const pathToPage = 'https://ru.hexlet.io/courses';
 const fileName = 'ru-hexlet-io-courses.html';
+
+const homedir = os.homedir();
 
 // beforeEach(async () => {
 //   const dtemp = await fs.mkdtemp(path.join(os.tmpdir(), 'page-loader-'), (_, dir) => {
@@ -18,17 +20,16 @@ const fileName = 'ru-hexlet-io-courses.html';
 // removeCreatedFiles();
 // });
 
-// test('default output dir', async () => {
-//   const data = await pageLoader(pathToPage);
-//   const pathToFile = `${process.cwd()}/${fileName}`;
-//   expect(data).toBe(`${process.cwd()}/${fileName}`);
-//   fs.unlinkSync(pathToFile);
-// });
+test('default output dir', async () => {
+  const pathToFile = `${process.cwd()}/${fileName}`;
+  const result = await pageLoader(pathToPage);
+  fs.unlinkSync(result);
+  expect(result).toBe(pathToFile);
+});
 
 test('specified output dir', async () => {
-  const outputDir = '/home/ulanivan';
-  const pathToFile = `${outputDir}/${fileName}`;
-  const result = await pageLoader(pathToPage, outputDir);
+  const pathToFile = `${homedir}/${fileName}`;
+  const result = await pageLoader(pathToPage, homedir);
   fs.unlinkSync(result);
   expect(result).toBe(pathToFile);
 });
