@@ -11,7 +11,8 @@ const makeFileName = (path) => {
 const pageLoader = (pathToPage, outputDir = process.cwd()) => {
   const pathToLoadedFile = `${outputDir}/${makeFileName(pathToPage)}.html`;
   return axios.get(pathToPage)
-    .then(({ data }) => fsPromises.writeFile(pathToLoadedFile, data).then(() => pathToLoadedFile));
+    .then(({ data }) => fsPromises.writeFile(pathToLoadedFile, data)
+      .then(() => pathToLoadedFile));
 };
 
 export default pageLoader;
