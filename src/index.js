@@ -5,7 +5,8 @@ const fsPromises = fs.promises;
 
 const makeFileName = (path) => {
   const { hostname, pathname } = new URL(path);
-  return `${hostname}${pathname}`.replace(/[^a-zA-Z0-9]/g, '-');
+  const p = pathname === '/' ? '' : pathname;
+  return `${hostname}${p}`.replace(/[^a-zA-Z0-9]/g, '-');
 };
 
 const pageLoader = (pathToPage, outputDir = process.cwd()) => {
