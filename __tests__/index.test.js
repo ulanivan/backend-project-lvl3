@@ -6,42 +6,57 @@ import pageLoader from '../src';
 
 const host = 'https://ya.ru';
 const fileName = 'ya-ru.html';
-const html = '<div>Hello world</div>';
+const dirName = 'ya-ru_files';
+let html = '';
 
 const homedir = os.homedir();
 
-test('default output dir', async () => {
-  const pathToFile = `${process.cwd()}/${fileName}`;
-
-  nock(host)
-    .get('/')
-    .reply(200, html);
-
-  const result = await pageLoader(host);
-  fs.unlinkSync(result);
-  expect(result).toBe(pathToFile);
+beforeAll(() => {
+  html = fs.readFileSync(`${__dirname}/__fixtures__/page.html`, 'utf8');
 });
 
-test('specified output dir', async () => {
-  const pathToFile = `${homedir}/${fileName}`;
+describe('check output dir', () => {
+  test('default output dir', async () => {
+    const dir = `${process.cwd()}/${dirName}`;
+    const pathToFile = `${dir}/${fileName}`;
 
-  nock(host)
-    .get('/')
-    .reply(200, html);
+    nock(host)
+      .get('/')
+      .reply(200, html);
 
-  const result = await pageLoader(host, homedir);
-  fs.unlinkSync(result);
-  expect(result).toBe(pathToFile);
+    const result = await pageLoader(host);
+    fs.rmSync(dirName, { recursive: true, force: true });
+
+    expect(result).toBe(pathToFile);
+  });
+
+  test('specified output dir', async () => {
+    const dir = `${homedir}/${dirName}`;
+    const pathToFile = `${dir}/${fileName}`;
+
+    nock(host)
+      .get('/')
+      .reply(200, html);
+
+    const result = await pageLoader(host, homedir);
+
+    fs.rmSync(dir, { recursive: true, force: true });
+
+    expect(result).toBe(pathToFile);
+  });
 });
 
-test('check content file', async () => {
-  nock(host)
-    .get('/')
-    .reply(200, html);
+describe('check content file', () => {
+  test('first', async () => {
+    nock(host)
+      .get('/')
+      .reply(200, html);
 
-  const path = await pageLoader(host, homedir);
-  const test = fs.readFileSync(path, 'utf8');
-  fs.unlinkSync(path);
+    const path = await pageLoader(host);
+    const resHtml = fs.readFileSync(path, 'utf8');
 
-  expect(test).toBe(html);
+    fs.rmSync(dirName, { recursive: true, force: true });
+
+    expect(resHtml).toBe(html);
+  });
 });
